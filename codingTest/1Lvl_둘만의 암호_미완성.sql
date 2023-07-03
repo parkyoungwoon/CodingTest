@@ -36,31 +36,25 @@ class Solution {
         char[] sArray = s.toCharArray();
         Map<Integer, String> map = new HashMap();
         Map<String, Integer> rMap = new HashMap();
+        int indexNum = 0;
         for(int i = 0; i < 26; i++){
             int tmp = 97;
-            map.put(i,Character.toString((char)(tmp+i)));
-            rMap.put(Character.toString((char)(tmp+i)),i);
+            if(skip.indexOf(Character.toString((char)(tmp+i))) == -1){
+                map.put(indexNum,Character.toString((char)(tmp+i)));
+                rMap.put(Character.toString((char)(tmp+i)),indexNum);
+                indexNum++;
+            }
         }
+        
         for(int i = 0; i < s.length(); i++){
             String tmpString = Character.toString(sArray[i]);
-            int tmpIndex = 0;
-            int j = 0;
-            while(true){
-                j++;
-                int tmpMapInt = rMap.get(tmpString)+j;
-                if(tmpMapInt > 25) {
-                	tmpMapInt = tmpMapInt%26;
-                }
-                if(tmpIndex == index){
-                    String tmpInputString = map.get(tmpMapInt-1);
-                    sArray[i] = tmpInputString.charAt(0);
-                    break;
-                }
-                
-                if(skip.indexOf(map.get(tmpMapInt)) == -1){
-                    tmpIndex++;
-                }
+            int tmpMapInt = rMap.get(tmpString)+index;
+            
+            if(tmpMapInt > indexNum-1) {
+                tmpMapInt = tmpMapInt%indexNum;
             }
+            sArray[i] = map.get(tmpMapInt).charAt(0);
+                
         }
         String answer = "";
         answer = String.valueOf(sArray);
